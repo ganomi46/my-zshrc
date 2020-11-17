@@ -18,7 +18,7 @@ alias d="docker"
 alias dps="docker ps"
 alias ec="$EDITOR $HOME/.zshrc"
 alias sc="source $HOME/.zshrc"
-alias sn="$HOME/Apps/standard-notes-3.4.6-linux-x86_64.AppImage --no-sandbox &"
+alias sn="$HOME/Apps/standard-notes-3.4.10-linux-x86_64.AppImage --no-sandbox &"
 
 
 # Use emacs keybindings even if our EDITOR is set to vi
@@ -34,7 +34,17 @@ HISTFILE=~/.zsh_history
 #compinit
 
 ## zplug
-source /usr/share/zplug/init.zsh
+
+if [ ! -d ~/.zplug ]; then
+  echo zplug is not installed. Installing...
+  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+  echo Plugin installation will start shortly...
+  sleep 5
+fi
+
+source ~/.zplug/init.zsh
+
+# list of plugins
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
@@ -47,6 +57,7 @@ zplug "junegunn/fzf"
 #zplug "themes/robbyrussell", from:oh-my-zsh, as:theme
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
+# install plugins if required
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
     if read -q; then
@@ -55,7 +66,7 @@ if ! zplug check --verbose; then
 fi
 zplug load --verbose
 
-# Adjust prompt
+## Adjust prompt for spaceship plugin
 SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
   user          # Username section
